@@ -36,3 +36,22 @@ The goal of this project is to combine creativity with structured coding practic
 ## 📂 Project Structure
 
 🔹 Every folder contains unique project
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to fork this repo and submit a pull request.
+
+---
+
+## 📜 License
+
+This project is for learning purposes.
+
+---
+
+## 👨‍💻 Author
+
+**Ibna Jiam**  
+CSE Student | Aspiring Developer 🚀
