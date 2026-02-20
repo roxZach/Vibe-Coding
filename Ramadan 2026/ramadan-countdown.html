@@ -2,8 +2,23 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>রমজান ২০২৬ | সেহরী ও ইফতার সময়সূচি</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#c9a84c">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- iOS specific -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="রমজান ২০২৬">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<!-- SEO -->
+<meta name="description" content="ঢাকার সেহরী ও ইফতারের সময়সূচি ও লাইভ কাউন্টডাউন — রমজান ২০২৬">
+
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -576,6 +591,10 @@ function populateTables() {
   });
 }
 
+function getNextEntry(r) {
+  return schedule.find(s => s.r === r + 1) || null;
+}
+
 function updateDisplay() {
   const now = new Date();
   const entry = getTodayEntry();
@@ -587,11 +606,6 @@ function updateDisplay() {
     return;
   }
 
-  document.getElementById('todayRamadan').textContent = toBn(entry.r) + ' রমজান';
-  document.getElementById('todayDate').textContent = entry.dateBn;
-  document.getElementById('todayDay').textContent = entry.day;
-  document.getElementById('sehriTime').textContent = entry.sehri + ' AM';
-  document.getElementById('iftarTime').textContent = entry.iftar + ' PM';
   const sehriTime = parseRaw(entry.sehriR, now);
   const iftarTime = parseIftar(entry, now);
   const nowMs = now.getTime();
@@ -606,7 +620,13 @@ function updateDisplay() {
   let diff = 0;
 
   if (nowMs < sehriMs) {
+    // সেহরীর আগে — সেহরী শেষের কাউন্টডাউন
     diff = sehriMs - nowMs;
+    document.getElementById('todayRamadan').textContent = toBn(entry.r) + ' রমজান';
+    document.getElementById('todayDate').textContent = entry.dateBn;
+    document.getElementById('todayDay').textContent = entry.day;
+    document.getElementById('sehriTime').textContent = entry.sehri + ' AM';
+    document.getElementById('iftarTime').textContent = entry.iftar + ' PM';
     ct.textContent = 'সেহরী শেষ হবে';
     ct.className = 'countdown-type for-sehri';
     cl.textContent = 'সময় বাকি';
@@ -616,10 +636,17 @@ function updateDisplay() {
     document.getElementById('progressEnd').textContent = 'সেহরী শেষ';
     digits.forEach(d => d.classList.add('sehri-color'));
     pf.className = 'progress-fill sehri-prog';
-    const w2 = 2*3600000;
+    const w2 = 2 * 3600000;
     pf.style.width = Math.min(100, Math.max(0, (nowMs - (sehriMs - w2)) / w2 * 100)) + '%';
+
   } else if (nowMs < iftarMs) {
+    // রোজা চলছে — ইফতারের কাউন্টডাউন
     diff = iftarMs - nowMs;
+    document.getElementById('todayRamadan').textContent = toBn(entry.r) + ' রমজান';
+    document.getElementById('todayDate').textContent = entry.dateBn;
+    document.getElementById('todayDay').textContent = entry.day;
+    document.getElementById('sehriTime').textContent = entry.sehri + ' AM';
+    document.getElementById('iftarTime').textContent = entry.iftar + ' PM';
     ct.textContent = 'ইফতার পর্যন্ত';
     ct.className = 'countdown-type for-iftar';
     cl.textContent = 'সময় বাকি';
@@ -630,13 +657,41 @@ function updateDisplay() {
     digits.forEach(d => d.classList.remove('sehri-color'));
     pf.className = 'progress-fill';
     pf.style.width = Math.min(100, (nowMs - sehriMs) / (iftarMs - sehriMs) * 100) + '%';
+
   } else {
-    ct.textContent = '';
-    cl.textContent = 'ইফতারের সময় হয়েছে!';
-    sm.textContent = '🌟 ইফতার মোবারক! আলহামদুলিল্লাহ';
-    sm.className = 'status-msg active-iftar';
-    pf.style.width = '100%';
-    digits.forEach(d => d.classList.remove('sehri-color'));
+    // ইফতারের পরে — পরের দিনের সেহরী পর্যন্ত কাউন্টডাউন
+    const nextEntry = getNextEntry(entry.r);
+    if (nextEntry) {
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const nextSehri = parseRaw(nextEntry.sehriR, tomorrow);
+      diff = nextSehri.getTime() - nowMs;
+
+      document.getElementById('todayRamadan').textContent = toBn(nextEntry.r) + ' রমজান';
+      document.getElementById('todayDate').textContent = nextEntry.dateBn;
+      document.getElementById('todayDay').textContent = nextEntry.day;
+      document.getElementById('sehriTime').textContent = nextEntry.sehri + ' AM';
+      document.getElementById('iftarTime').textContent = nextEntry.iftar + ' PM';
+      ct.textContent = 'কাল সেহরী পর্যন্ত';
+      ct.className = 'countdown-type for-sehri';
+      cl.textContent = 'সময় বাকি';
+      sm.textContent = '🌟 ইফতার মোবারক! — কাল ' + nextEntry.sehri + ' AM এর মধ্যে সেহরী করুন';
+      sm.className = 'status-msg active-sehri';
+      document.getElementById('progressStart').textContent = 'ইফতার';
+      document.getElementById('progressEnd').textContent = 'কাল সেহরী';
+      digits.forEach(d => d.classList.add('sehri-color'));
+      pf.className = 'progress-fill sehri-prog';
+      const totalNight = nextSehri.getTime() - iftarMs;
+      pf.style.width = Math.min(100, Math.max(0, (nowMs - iftarMs) / totalNight * 100)) + '%';
+    } else {
+      // ৩০ রমজানের পরে — ঈদ মোবারক
+      ct.textContent = '';
+      cl.textContent = 'রমজান শেষ হয়েছে';
+      sm.textContent = '🌙 ঈদ মোবারক! আলহামদুলিল্লাহ';
+      sm.className = 'status-msg active-iftar';
+      pf.style.width = '100%';
+      digits.forEach(d => d.classList.remove('sehri-color'));
+    }
   }
 
   if (diff > 0) {
@@ -654,6 +709,13 @@ function updateDisplay() {
 populateTables();
 updateDisplay();
 setInterval(updateDisplay, 1000);
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
