@@ -19,6 +19,21 @@
 <!-- SEO -->
 <meta name="description" content="ঢাকার সেহরী ও ইফতারের সময়সূচি ও লাইভ কাউন্টডাউন — রমজান ২০২৬">
 
+<!-- Open Graph — Facebook, WhatsApp, Messenger, Telegram শেয়ার প্রিভিউ -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="রমজান ২০২৬ | সেহরী ও ইফতার কাউন্টডাউন">
+<meta property="og:description" content="ঢাকার সেহরী ও ইফতারের লাইভ কাউন্টডাউন, সম্পূর্ণ ৩০ দিনের সময়সূচি ও রমজানের দোয়া। তৈরি করেছেন Ibna Jiam।">
+<meta property="og:image" content="icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:locale" content="bn_BD">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="রমজান ২০২৬ | সেহরী ও ইফতার কাউন্টডাউন">
+<meta name="twitter:description" content="ঢাকার সেহরী ও ইফতারের লাইভ কাউন্টডাউন ও সম্পূর্ণ সময়সূচি।">
+<meta name="twitter:image" content="icon-512.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -662,9 +677,14 @@ function updateDisplay() {
     // ইফতারের পরে — পরের দিনের সেহরী পর্যন্ত কাউন্টডাউন
     const nextEntry = getNextEntry(entry.r);
     if (nextEntry) {
-      const tomorrow = new Date(now);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const nextSehri = parseRaw(nextEntry.sehriR, tomorrow);
+      // রাত ১২টার আগে: tomorrow = আজ+১
+      // রাত ১২টার পরে: getTodayEntry() ইতিমধ্যে পরের দিন ধরেছে,
+      // তাই nextEntry এর sehri আজকের date এ parse করলেই হবে
+      const isMidnightPassed = now.getHours() < 12; // midnight to noon = new calendar day
+      const sehriBase = isMidnightPassed ? now : (() => {
+        const t = new Date(now); t.setDate(t.getDate() + 1); return t;
+      })();
+      const nextSehri = parseRaw(nextEntry.sehriR, sehriBase);
       diff = nextSehri.getTime() - nowMs;
 
       document.getElementById('todayRamadan').textContent = toBn(nextEntry.r) + ' রমজান';
@@ -672,13 +692,13 @@ function updateDisplay() {
       document.getElementById('todayDay').textContent = nextEntry.day;
       document.getElementById('sehriTime').textContent = nextEntry.sehri + ' AM';
       document.getElementById('iftarTime').textContent = nextEntry.iftar + ' PM';
-      ct.textContent = 'কাল সেহরী পর্যন্ত';
+      ct.textContent = 'আজকে সেহরী পর্যন্ত';
       ct.className = 'countdown-type for-sehri';
       cl.textContent = 'সময় বাকি';
-      sm.textContent = '🌟 ইফতার মোবারক! — কাল ' + nextEntry.sehri + ' AM এর মধ্যে সেহরী করুন';
+      sm.textContent = '🌟 ইফতার মোবারক! — আজ ' + nextEntry.sehri + ' AM এর মধ্যে সেহরী করুন';
       sm.className = 'status-msg active-sehri';
       document.getElementById('progressStart').textContent = 'ইফতার';
-      document.getElementById('progressEnd').textContent = 'কাল সেহরী';
+      document.getElementById('progressEnd').textContent = 'আজকে সেহরী';
       digits.forEach(d => d.classList.add('sehri-color'));
       pf.className = 'progress-fill sehri-prog';
       const totalNight = nextSehri.getTime() - iftarMs;
