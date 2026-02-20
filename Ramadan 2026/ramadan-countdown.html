@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>রমজান ২০২৬ | সেহরী ও ইফতার সময়সূচি</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dark: #8a6d1e;
+    --navy: #0a1628;
+    --navy-mid: #0e2040;
+    --navy-light: #162d58;
+    --white: #f8f4e8;
+    --text-muted: #a09070;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Noto Serif Bengali', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(201,168,76,0.07) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(26,107,122,0.09) 0%, transparent 50%),
+      radial-gradient(1px 1px at 10% 15%, rgba(240,208,128,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 5%,  rgba(240,208,128,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 25%, rgba(240,208,128,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 80%, rgba(240,208,128,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 60%, rgba(240,208,128,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 60% 10%, rgba(240,208,128,0.5) 0%, transparent 100%),
+      radial-gradient(2px 2px at 25% 90%, rgba(240,208,128,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z' fill='none' stroke='rgba(201,168,76,0.04)' stroke-width='1'/%3E%3Ccircle cx='30' cy='30' r='15' fill='none' stroke='rgba(201,168,76,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* Header */
+  .header { text-align: center; padding: 36px 0 20px; }
+
+  .moon-icon {
+    font-size: 52px;
+    display: block;
+    margin: 0 auto 10px;
+    animation: moonGlow 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.5));
+  }
+  @keyframes moonGlow {
+    0%,100% { filter: drop-shadow(0 0 20px rgba(201,168,76,0.5)); transform: scale(1); }
+    50%      { filter: drop-shadow(0 0 42px rgba(201,168,76,0.9)); transform: scale(1.06); }
+  }
+
+  .main-title {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: clamp(28px, 7vw, 48px);
+    font-weight: 700;
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4);
+    line-height: 1.3;
+  }
+
+  .sub-title { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 18px auto; max-width: 280px;
+  }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; }
+  .divider::before { background: linear-gradient(to right, transparent, var(--gold)); }
+  .divider::after  { background: linear-gradient(to left,  transparent, var(--gold)); }
+  .divider span { color: var(--gold); font-size: 16px; }
+
+  /* Countdown */
+  .countdown-section {
+    background: linear-gradient(135deg, rgba(201,168,76,0.09), rgba(26,107,122,0.08));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 20px;
+    padding: 32px 20px 28px;
+    margin-bottom: 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .countdown-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .countdown-type { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 4px; }
+  .countdown-type.for-iftar { color: var(--gold); }
+  .countdown-type.for-sehri { color: #7ab0e0; }
+
+  .countdown-label { font-size: 15px; font-weight: 600; margin-bottom: 22px; color: var(--white); opacity: 0.8; }
+
+  .countdown-digits {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .digit-block { display: flex; flex-direction: column; align-items: center; }
+
+  .digit-num {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: clamp(52px, 14vw, 88px);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    min-width: 90px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .digit-num.sehri-color {
+    background: linear-gradient(180deg, #c0e0ff, #7ab0e0);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .digit-label { font-size: 10px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-top: 5px; }
+
+  .colon {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: clamp(52px, 14vw, 88px);
+    font-weight: 300;
+    color: var(--gold-dark);
+    line-height: 1;
+    animation: blink 1s ease-in-out infinite;
+    align-self: flex-start;
+  }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.25; } }
+
+  .status-msg {
+    margin-top: 18px; padding: 10px 24px; border-radius: 30px;
+    font-size: 14px; display: inline-block;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  .status-msg.active-iftar { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
+  .status-msg.active-sehri { background: rgba(122,176,224,0.12); border: 1px solid rgba(122,176,224,0.3); color: #b0d4f8; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+
+  .progress-wrap { margin-top: 22px; }
+  .progress-bar { height: 4px; background: rgba(255,255,255,0.07); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 1s linear; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); }
+  .progress-fill.sehri-prog { background: linear-gradient(90deg, #2a6080, #7ab0e0); }
+  .progress-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 5px; letter-spacing: 1px; }
+
+  /* Collapsible */
+  .collapsible-wrap { margin-bottom: 14px; }
+
+  .collapsible-btn {
+    width: 100%;
+    background: linear-gradient(90deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: var(--gold-light);
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.25s, border-radius 0.25s;
+    letter-spacing: 0.5px;
+  }
+  .collapsible-btn:hover { background: linear-gradient(90deg, rgba(201,168,76,0.2), rgba(201,168,76,0.07)); }
+  .collapsible-btn.open { border-radius: 12px 12px 0 0; }
+  .collapsible-btn .arrow { font-size: 12px; transition: transform 0.3s; color: var(--gold); flex-shrink: 0; }
+  .collapsible-btn.open .arrow { transform: rotate(180deg); }
+
+  .collapsible-content {
+    display: none;
+    border: 1px solid rgba(201,168,76,0.18);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+  }
+  .collapsible-content.open { display: block; }
+
+  /* Today card */
+  .today-inner {
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-light) 100%);
+    padding: 22px;
+  }
+
+  .today-date-row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 18px; }
+  .date-item { text-align: center; }
+  .date-item .label { font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px; letter-spacing: 1px; }
+  .date-item .value { font-size: 16px; color: var(--white); font-weight: 600; font-family: 'Noto Serif Bengali', serif; }
+
+  .times-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .time-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(201,168,76,0.15); border-radius: 12px; padding: 16px; text-align: center; }
+  .time-box.sehri { border-color: rgba(100,160,220,0.3); }
+  .time-box.iftar { border-color: rgba(240,180,60,0.4); }
+  .time-box .type { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .time-box.sehri .type { color: #7ab0e0; }
+  .time-box.iftar .type { color: var(--gold); }
+  .time-box .time { font-family: 'Noto Serif Bengali', serif; font-size: 30px; font-weight: 700; line-height: 1; }
+  .time-box.sehri .time { color: #b0d4f8; }
+  .time-box.iftar .time { color: var(--gold-light); }
+
+  /* Tables */
+  .section-group { margin-bottom: 0; }
+  .group-header {
+    text-align: center; font-size: 11px; letter-spacing: 2px; color: var(--gold);
+    text-transform: uppercase; padding: 10px;
+    background: rgba(201,168,76,0.07);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: linear-gradient(90deg, rgba(201,168,76,0.14), rgba(201,168,76,0.03)); }
+  thead th {
+    padding: 11px 8px; text-align: center; font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    border-bottom: 1px solid rgba(201,168,76,0.18); white-space: nowrap;
+    font-family: 'Noto Serif Bengali', serif;
+  }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; }
+  tbody tr:hover { background: rgba(201,168,76,0.05); }
+  tbody tr.today-row { background: linear-gradient(90deg, rgba(201,168,76,0.13), rgba(201,168,76,0.04)); border-left: 3px solid var(--gold); }
+  tbody td { padding: 9px 8px; text-align: center; color: var(--white); opacity: 0.85; font-family: 'Noto Serif Bengali', serif; }
+  tbody tr.today-row td { opacity: 1; color: var(--gold-light); font-weight: 600; }
+
+  .today-badge { display: inline-block; background: var(--gold); color: var(--navy); font-size: 8px; font-weight: 700; padding: 2px 5px; border-radius: 4px; margin-left: 4px; vertical-align: middle; }
+  .ramadan-num {
+    display: inline-block; width: 28px; height: 28px; line-height: 28px;
+    border-radius: 50%; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+    font-size: 12px; color: var(--gold); font-family: 'Noto Serif Bengali', serif;
+  }
+  tbody tr.today-row .ramadan-num { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 700; }
+
+  /* Dua */
+  .dua-card { background: linear-gradient(135deg, rgba(16,60,80,0.6), rgba(14,32,64,0.8)); }
+  .dua-item { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .dua-item:last-child { border-bottom: none; }
+  .dua-name { font-size: 13px; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+  .dua-arabic { font-size: 19px; color: var(--gold-light); line-height: 2.3; direction: rtl; text-align: right; margin-bottom: 10px; }
+  .dua-bangla { font-size: 13px; color: #c0b890; line-height: 2; }
+  .dua-ref { font-size: 10px; color: var(--text-muted); margin-top: 6px; font-style: italic; }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(201,168,76,0.1); }
+  .footer-made { font-size: 13px; color: var(--text-muted); }
+  .footer-made span { color: var(--gold); font-weight: 700; }
+  .footer-sub { font-size: 11px; color: rgba(160,144,112,0.5); margin-top: 4px; }
+
+  .lantern { position: fixed; font-size: 38px; opacity: 0.45; z-index: 0; pointer-events: none; animation: swing 4s ease-in-out infinite; }
+  .lantern-left  { top: 16px; left: 16px; animation-delay: 0s; }
+  .lantern-right { top: 16px; right: 16px; animation-delay: 1.2s; }
+  @keyframes swing { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+
+  @media (max-width: 480px) {
+    .digit-num { min-width: 60px; }
+    .times-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lantern lantern-left">🪔</div>
+<div class="lantern lantern-right">🪔</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <span class="moon-icon">🌙</span>
+    <h1 class="main-title">রমজান ২০২৬</h1>
+    <p class="sub-title">সেহরী ও ইফতারের সময়সূচি · ঢাকা ও পার্শ্ববর্তী এলাকা</p>
+  </div>
+
+  <div class="divider"><span>✦</span></div>
+
+  <!-- 1. COUNTDOWN (hero, always visible) -->
+  <div class="countdown-section">
+    <div class="countdown-type for-iftar" id="countdownType">ইফতার পর্যন্ত</div>
+    <div class="countdown-label" id="countdownLabel">সময় বাকি</div>
+    <div class="countdown-digits">
+      <div class="digit-block">
+        <div class="digit-num" id="cdHours">০০</div>
+        <div class="digit-label">ঘণ্টা</div>
+      </div>
+      <div class="colon">:</div>
+      <div class="digit-block">
+        <div class="digit-num" id="cdMinutes">০০</div>
+        <div class="digit-label">মিনিট</div>
+      </div>
+      <div class="colon">:</div>
+      <div class="digit-block">
+        <div class="digit-num" id="cdSeconds">০০</div>
+        <div class="digit-label">সেকেন্ড</div>
+      </div>
+    </div>
+    <div id="statusMsg" class="status-msg active-iftar">☀️ রোজা চলছে</div>
+    <div class="progress-wrap">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-labels">
+        <span id="progressStart">সেহরী</span>
+        <span id="progressEnd">ইফতার</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. TODAY INFO (collapsible, open by default) -->
+  <div class="collapsible-wrap">
+    <button class="collapsible-btn open" onclick="toggle(this)">
+      <span>আজকের তথ্য</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="collapsible-content open">
+      <div class="today-inner">
+        <div class="today-date-row">
+          <div class="date-item">
+            <span class="label">রমজান</span>
+            <span class="value" id="todayRamadan">—</span>
+          </div>
+          <div class="date-item">
+            <span class="label">তারিখ</span>
+            <span class="value" id="todayDate">—</span>
+          </div>
+          <div class="date-item">
+            <span class="label">বার</span>
+            <span class="value" id="todayDay">—</span>
+          </div>
+        </div>
+        <div class="times-row">
+          <div class="time-box sehri">
+            <span class="type">সেহরী শেষ</span>
+            <div class="time" id="sehriTime">—</div>
+          </div>
+          <div class="time-box iftar">
+            <span class="type">ইফতার</span>
+            <div class="time" id="iftarTime">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. FULL SCHEDULE (collapsible, closed by default) -->
+  <div class="collapsible-wrap">
+    <button class="collapsible-btn" onclick="toggle(this)">
+      <span>সম্পূর্ণ সময়সূচি (৩০ দিন)</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="collapsible-content">
+
+      <div class="section-group">
+        <div class="group-header">রহমতের ১০ দিন · ১ম – ১০ম রমজান</div>
+        <div class="table-wrap">
+          <table id="table1">
+            <thead><tr><th>রমজান</th><th>তারিখ</th><th>বার</th><th>সেহরী</th><th>ইফতার</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="group-header">মাগফিরাতের ১০ দিন · ১১তম – ২০তম রমজান</div>
+        <div class="table-wrap">
+          <table id="table2">
+            <thead><tr><th>রমজান</th><th>তারিখ</th><th>বার</th><th>সেহরী</th><th>ইফতার</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-group">
+        <div class="group-header">নাজাতের ১০ দিন · ২১তম – ৩০তম রমজান</div>
+        <div class="table-wrap">
+          <table id="table3">
+            <thead><tr><th>রমজান</th><th>তারিখ</th><th>বার</th><th>সেহরী</th><th>ইফতার</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. DUA SECTION (collapsible, closed by default) -->
+  <div class="collapsible-wrap">
+    <button class="collapsible-btn" onclick="toggle(this)">
+      <span>রমজানের গুরুত্বপূর্ণ দোয়া</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="collapsible-content">
+      <div class="dua-card">
+
+        <div class="dua-item">
+          <div class="dua-name">🌙 ইফতারের দোয়া</div>
+          <div class="dua-arabic">اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ</div>
+          <div class="dua-bangla">হে আল্লাহ! আমি তোমারই সন্তুষ্টির জন্য রোজা রেখেছি এবং তোমারই দেওয়া রিজিক দ্বারা ইফতার করছি।</div>
+          <div class="dua-ref">(সুনানে আবু দাউদ: ২৩৫৮)</div>
+        </div>
+
+        <div class="dua-item">
+          <div class="dua-name">🌅 সেহরীর নিয়ত</div>
+          <div class="dua-arabic">نَوَيْتُ أَنْ أَصُومَ غَدًا مِنْ شَهْرِ رَمَضَانَ الْمُبَارَكِ فَرْضًا لَكَ يَا اللَّهُ فَتَقَبَّلْ مِنِّي</div>
+          <div class="dua-bangla">হে আল্লাহ! আমি আগামীকাল পবিত্র রমজান মাসের ফরজ রোজা রাখার নিয়ত করলাম। তুমি আমার পক্ষ থেকে কবুল করো।</div>
+        </div>
+
+        <div class="dua-item">
+          <div class="dua-name">🤲 রমজান শুরুতে দোয়া</div>
+          <div class="dua-arabic">اللَّهُمَّ بَارِكْ لَنَا فِي رَجَبٍ وَشَعْبَانَ وَبَلِّغْنَا رَمَضَانَ</div>
+          <div class="dua-bangla">হে আল্লাহ! আমাদের রজব ও শাবান মাসে বরকত দাও এবং আমাদের রমজান পর্যন্ত পৌঁছে দাও।</div>
+          <div class="dua-ref">(মুসনাদে আহমাদ)</div>
+        </div>
+
+        <div class="dua-item">
+          <div class="dua-name">⭐ লাইলাতুল কদরের দোয়া</div>
+          <div class="dua-arabic">اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي</div>
+          <div class="dua-bangla">হে আল্লাহ! তুমি ক্ষমাশীল, ক্ষমা করতে ভালোবাসো, আমাকে ক্ষমা করে দাও।</div>
+          <div class="dua-ref">(তিরমিযী: ৩৫১৩)</div>
+        </div>
+
+        <div class="dua-item">
+          <div class="dua-name">🌟 তারাবির নামাজের দোয়া</div>
+          <div class="dua-arabic">سُبْحَانَ الْمَلِكِ الْقُدُّوسِ</div>
+          <div class="dua-bangla">পবিত্র মহান সত্তা, পবিত্র বাদশাহ। — প্রতি চার রাকাত পরে তিনবার পড়া সুন্নত।</div>
+          <div class="dua-ref">(আবু দাউদ)</div>
+        </div>
+
+        <div class="dua-item">
+          <div class="dua-name">💫 রোজার গুরুত্ব — কুরআন</div>
+          <div class="dua-bangla" style="color:var(--white); font-size:14px; line-height:2.1;">
+            হে ঈমানদারগণ! তোমাদের উপর রোজা ফরজ করা হয়েছে, যেমন ফরজ করা হয়েছিল তোমাদের পূর্ববর্তীদের উপর, যেন তোমরা মুত্তাকী হতে পারো।
+          </div>
+          <div class="dua-ref">— সূরা বাকারা (২:১৮৩)</div>
+        </div>
+
+        <div class="dua-item">
+          <div class="dua-name">📿 ইস্তিগফার — বেশি বেশি পড়ুন</div>
+          <div class="dua-arabic">أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ</div>
+          <div class="dua-bangla">আমি মহান আল্লাহর কাছে ক্ষমা চাই, যিনি ছাড়া কোনো ইলাহ নেই, যিনি চিরজীবী ও চিরস্থায়ী এবং আমি তাঁর কাছে তওবা করি।</div>
+          <div class="dua-ref">(তিরমিযী: ৩৫৭৭)</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-sub">ঢাকা ও পার্শ্ববর্তী এলাকার জন্য · রমজান ১৪৪৭ হিজরী</div>
+    <div class="footer-made" style="margin-top:10px;">© ২০২৬ ডিজাইন ও ডেভেলপমেন্ট: <a href="https://www.facebook.com/ibnajiam/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.4);padding-bottom:1px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.4)'">Ibna Jiam</a></div>
+  </div>
+
+</div>
+
+<script>
+// Bengali digit map
+const bnD = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+function toBn(n) { return String(n).replace(/[0-9]/g, d => bnD[d]); }
+function pad2Bn(n) { return toBn(String(n).padStart(2,'0')); }
+
+// Schedule data — corrected from original image
+const schedule = [
+  // রহমতের ১০ দিন (১-১০) — ইফতার সময় ৫:৫৮ থেকে শুরু (PM)
+  { r:1,  dateBn:'১৯ ফেব্রুয়ারি', day:'বৃহস্পতিবার', sehri:'৫:১২', iftar:'৫:৫৮', month:2, mDate:19, year:2026, sehriR:'5:12', iftarH:17, iftarM:58 },
+  { r:2,  dateBn:'২০ ফেব্রুয়ারি', day:'শুক্রবার',    sehri:'৫:১১', iftar:'৫:৫৮', month:2, mDate:20, year:2026, sehriR:'5:11', iftarH:17, iftarM:58 },
+  { r:3,  dateBn:'২১ ফেব্রুয়ারি', day:'শনিবার',     sehri:'৫:১১', iftar:'৫:৫৯', month:2, mDate:21, year:2026, sehriR:'5:11', iftarH:17, iftarM:59 },
+  { r:4,  dateBn:'২২ ফেব্রুয়ারি', day:'রবিবার',     sehri:'৫:১০', iftar:'৫:৫৯', month:2, mDate:22, year:2026, sehriR:'5:10', iftarH:17, iftarM:59 },
+  { r:5,  dateBn:'২৩ ফেব্রুয়ারি', day:'সোমবার',     sehri:'৫:০৯', iftar:'৬:০০', month:2, mDate:23, year:2026, sehriR:'5:09', iftarH:18, iftarM:0  },
+  { r:6,  dateBn:'২৪ ফেব্রুয়ারি', day:'মঙ্গলবার',   sehri:'৫:০৮', iftar:'৬:০০', month:2, mDate:24, year:2026, sehriR:'5:08', iftarH:18, iftarM:0  },
+  { r:7,  dateBn:'২৫ ফেব্রুয়ারি', day:'বুধবার',     sehri:'৫:০৮', iftar:'৬:০১', month:2, mDate:25, year:2026, sehriR:'5:08', iftarH:18, iftarM:1  },
+  { r:8,  dateBn:'২৬ ফেব্রুয়ারি', day:'বৃহস্পতিবার', sehri:'৫:০৭', iftar:'৬:০১', month:2, mDate:26, year:2026, sehriR:'5:07', iftarH:18, iftarM:1  },
+  { r:9,  dateBn:'২৭ ফেব্রুয়ারি', day:'শুক্রবার',    sehri:'৫:০৬', iftar:'৬:০২', month:2, mDate:27, year:2026, sehriR:'5:06', iftarH:18, iftarM:2  },
+  { r:10, dateBn:'২৮ ফেব্রুয়ারি', day:'শনিবার',     sehri:'৫:০৫', iftar:'৬:০২', month:2, mDate:28, year:2026, sehriR:'5:05', iftarH:18, iftarM:2  },
+  // মাগফিরাতের ১০ দিন (১১-২০)
+  { r:11, dateBn:'০১ মার্চ',       day:'রবিবার',     sehri:'৫:০৫', iftar:'৬:০৩', month:3, mDate:1,  year:2026, sehriR:'5:05', iftarH:18, iftarM:3  },
+  { r:12, dateBn:'০২ মার্চ',       day:'সোমবার',     sehri:'৫:০৪', iftar:'৬:০৩', month:3, mDate:2,  year:2026, sehriR:'5:04', iftarH:18, iftarM:3  },
+  { r:13, dateBn:'০৩ মার্চ',       day:'মঙ্গলবার',   sehri:'৫:০৩', iftar:'৬:০৪', month:3, mDate:3,  year:2026, sehriR:'5:03', iftarH:18, iftarM:4  },
+  { r:14, dateBn:'০৪ মার্চ',       day:'বুধবার',     sehri:'৫:০২', iftar:'৬:০৪', month:3, mDate:4,  year:2026, sehriR:'5:02', iftarH:18, iftarM:4  },
+  { r:15, dateBn:'০৫ মার্চ',       day:'বৃহস্পতিবার', sehri:'৫:০১', iftar:'৬:০৫', month:3, mDate:5,  year:2026, sehriR:'5:01', iftarH:18, iftarM:5  },
+  { r:16, dateBn:'০৬ মার্চ',       day:'শুক্রবার',    sehri:'৫:০০', iftar:'৬:০৫', month:3, mDate:6,  year:2026, sehriR:'5:00', iftarH:18, iftarM:5  },
+  { r:17, dateBn:'০৭ মার্চ',       day:'শনিবার',     sehri:'৪:৫৯', iftar:'৬:০৬', month:3, mDate:7,  year:2026, sehriR:'4:59', iftarH:18, iftarM:6  },
+  { r:18, dateBn:'০৮ মার্চ',       day:'রবিবার',     sehri:'৪:৫৮', iftar:'৬:০৬', month:3, mDate:8,  year:2026, sehriR:'4:58', iftarH:18, iftarM:6  },
+  { r:19, dateBn:'০৯ মার্চ',       day:'সোমবার',     sehri:'৪:৫৭', iftar:'৬:০৭', month:3, mDate:9,  year:2026, sehriR:'4:57', iftarH:18, iftarM:7  },
+  { r:20, dateBn:'১০ মার্চ',       day:'মঙ্গলবার',   sehri:'৪:৫৭', iftar:'৬:০৭', month:3, mDate:10, year:2026, sehriR:'4:57', iftarH:18, iftarM:7  },
+  // নাজাতের ১০ দিন (২১-৩০)
+  { r:21, dateBn:'১১ মার্চ',       day:'বুধবার',     sehri:'৪:৫৬', iftar:'৬:০৭', month:3, mDate:11, year:2026, sehriR:'4:56', iftarH:18, iftarM:7  },
+  { r:22, dateBn:'১২ মার্চ',       day:'বৃহস্পতিবার', sehri:'৪:৫৫', iftar:'৬:০৮', month:3, mDate:12, year:2026, sehriR:'4:55', iftarH:18, iftarM:8  },
+  { r:23, dateBn:'১৩ মার্চ',       day:'শুক্রবার',    sehri:'৪:৫৪', iftar:'৬:০৮', month:3, mDate:13, year:2026, sehriR:'4:54', iftarH:18, iftarM:8  },
+  { r:24, dateBn:'১৪ মার্চ',       day:'শনিবার',     sehri:'৪:৫৩', iftar:'৬:০৯', month:3, mDate:14, year:2026, sehriR:'4:53', iftarH:18, iftarM:9  },
+  { r:25, dateBn:'১৫ মার্চ',       day:'রবিবার',     sehri:'৪:৫২', iftar:'৬:০৯', month:3, mDate:15, year:2026, sehriR:'4:52', iftarH:18, iftarM:9  },
+  { r:26, dateBn:'১৬ মার্চ',       day:'সোমবার',     sehri:'৪:৫১', iftar:'৬:১০', month:3, mDate:16, year:2026, sehriR:'4:51', iftarH:18, iftarM:10 },
+  { r:27, dateBn:'১৭ মার্চ',       day:'মঙ্গলবার',   sehri:'৪:৫০', iftar:'৬:১০', month:3, mDate:17, year:2026, sehriR:'4:50', iftarH:18, iftarM:10 },
+  { r:28, dateBn:'১৮ মার্চ',       day:'বুধবার',     sehri:'৪:৪৯', iftar:'৬:১০', month:3, mDate:18, year:2026, sehriR:'4:49', iftarH:18, iftarM:10 },
+  { r:29, dateBn:'১৯ মার্চ',       day:'বৃহস্পতিবার', sehri:'৪:৪৮', iftar:'৬:১১', month:3, mDate:19, year:2026, sehriR:'4:48', iftarH:18, iftarM:11 },
+  { r:30, dateBn:'২০ মার্চ',       day:'শুক্রবার',    sehri:'৪:৪৭', iftar:'৬:১১', month:3, mDate:20, year:2026, sehriR:'4:47', iftarH:18, iftarM:11 },
+];
+
+function parseRaw(str, now) {
+  const [h, m] = str.split(':').map(Number);
+  const d = new Date(now);
+  d.setHours(h, m, 0, 0);
+  return d;
+}
+
+function parseIftar(entry, now) {
+  const d = new Date(now);
+  d.setHours(entry.iftarH, entry.iftarM, 0, 0);
+  return d;
+}
+
+function getTodayEntry() {
+  const now = new Date();
+  return schedule.find(s => s.year === now.getFullYear() && s.month === now.getMonth()+1 && s.mDate === now.getDate()) || null;
+}
+
+function toggle(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+function populateTables() {
+  const bodies = [
+    document.querySelector('#table1 tbody'),
+    document.querySelector('#table2 tbody'),
+    document.querySelector('#table3 tbody'),
+  ];
+  const todayEntry = getTodayEntry();
+
+  schedule.forEach(s => {
+    const isToday = todayEntry && s.r === todayEntry.r;
+    const row = document.createElement('tr');
+    if (isToday) row.classList.add('today-row');
+    row.innerHTML = `
+      <td><span class="ramadan-num">${toBn(s.r)}</span></td>
+      <td>${s.dateBn}${isToday ? '<span class="today-badge">আজ</span>' : ''}</td>
+      <td>${s.day}</td>
+      <td>${s.sehri} AM</td>
+      <td>${s.iftar} PM</td>
+    `;
+    const idx = s.r <= 10 ? 0 : s.r <= 20 ? 1 : 2;
+    bodies[idx].appendChild(row);
+  });
+}
+
+function updateDisplay() {
+  const now = new Date();
+  const entry = getTodayEntry();
+
+  if (!entry) {
+    document.getElementById('todayRamadan').textContent = 'রমজানের বাইরে';
+    document.getElementById('countdownLabel').textContent = 'রমজানের সময়সূচি দেখুন নিচে';
+    document.getElementById('statusMsg').textContent = '🌙 রমজান শুরু হয়নি বা শেষ হয়েছে';
+    return;
+  }
+
+  document.getElementById('todayRamadan').textContent = toBn(entry.r) + ' রমজান';
+  document.getElementById('todayDate').textContent = entry.dateBn;
+  document.getElementById('todayDay').textContent = entry.day;
+  document.getElementById('sehriTime').textContent = entry.sehri + ' AM';
+  document.getElementById('iftarTime').textContent = entry.iftar + ' PM';
+  const sehriTime = parseRaw(entry.sehriR, now);
+  const iftarTime = parseIftar(entry, now);
+  const nowMs = now.getTime();
+  const sehriMs = sehriTime.getTime();
+  const iftarMs = iftarTime.getTime();
+
+  const ct = document.getElementById('countdownType');
+  const cl = document.getElementById('countdownLabel');
+  const sm = document.getElementById('statusMsg');
+  const pf = document.getElementById('progressFill');
+  const digits = document.querySelectorAll('.digit-num');
+  let diff = 0;
+
+  if (nowMs < sehriMs) {
+    diff = sehriMs - nowMs;
+    ct.textContent = 'সেহরী শেষ হবে';
+    ct.className = 'countdown-type for-sehri';
+    cl.textContent = 'সময় বাকি';
+    sm.textContent = '🌙 সেহরীর সময় চলছে';
+    sm.className = 'status-msg active-sehri';
+    document.getElementById('progressStart').textContent = 'এখন';
+    document.getElementById('progressEnd').textContent = 'সেহরী শেষ';
+    digits.forEach(d => d.classList.add('sehri-color'));
+    pf.className = 'progress-fill sehri-prog';
+    const w2 = 2*3600000;
+    pf.style.width = Math.min(100, Math.max(0, (nowMs - (sehriMs - w2)) / w2 * 100)) + '%';
+  } else if (nowMs < iftarMs) {
+    diff = iftarMs - nowMs;
+    ct.textContent = 'ইফতার পর্যন্ত';
+    ct.className = 'countdown-type for-iftar';
+    cl.textContent = 'সময় বাকি';
+    sm.textContent = '☀️ রোজা চলছে — আল্লাহ কবুল করুন';
+    sm.className = 'status-msg active-iftar';
+    document.getElementById('progressStart').textContent = 'সেহরী';
+    document.getElementById('progressEnd').textContent = 'ইফতার';
+    digits.forEach(d => d.classList.remove('sehri-color'));
+    pf.className = 'progress-fill';
+    pf.style.width = Math.min(100, (nowMs - sehriMs) / (iftarMs - sehriMs) * 100) + '%';
+  } else {
+    ct.textContent = '';
+    cl.textContent = 'ইফতারের সময় হয়েছে!';
+    sm.textContent = '🌟 ইফতার মোবারক! আলহামদুলিল্লাহ';
+    sm.className = 'status-msg active-iftar';
+    pf.style.width = '100%';
+    digits.forEach(d => d.classList.remove('sehri-color'));
+  }
+
+  if (diff > 0) {
+    const s = Math.floor(diff / 1000);
+    document.getElementById('cdHours').textContent   = pad2Bn(Math.floor(s / 3600));
+    document.getElementById('cdMinutes').textContent = pad2Bn(Math.floor((s % 3600) / 60));
+    document.getElementById('cdSeconds').textContent = pad2Bn(s % 60);
+  } else {
+    document.getElementById('cdHours').textContent   = '০০';
+    document.getElementById('cdMinutes').textContent = '০০';
+    document.getElementById('cdSeconds').textContent = '০০';
+  }
+}
+
+populateTables();
+updateDisplay();
+setInterval(updateDisplay, 1000);
+</script>
+</body>
+</html>
