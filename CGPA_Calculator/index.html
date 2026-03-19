@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ── Primary SEO ── -->
+<title>EWU CGPA Calculator – East West University GPA & CGPA Tool</title>
+<meta name="description" content="Free online CGPA calculator for East West University (EWU) students. Instantly calculate your semester GPA and cumulative CGPA by entering your course credits and grades.">
+<meta name="keywords" content="EWU CGPA calculator, East West University CGPA, EWU GPA calculator, CGPA calculator Bangladesh, university grade calculator, EWU semester GPA, cumulative GPA calculator, EWU result calculator">
+<meta name="author" content="EWU CGPA Calculator">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#10d9a0">
+<link rel="canonical" href="https://ewucgpa.netlify.app/">
+
+<!-- ── Open Graph (Facebook, LinkedIn, WhatsApp) ── -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ewucgpa.netlify.app/">
+<meta property="og:title" content="EWU CGPA Calculator – East West University">
+<meta property="og:description" content="Calculate your semester GPA and cumulative CGPA instantly. Built for East West University students — free, fast, and easy to use.">
+<meta property="og:image" content="https://ewucgpa.netlify.app/og-image.png">
+<meta property="og:site_name" content="EWU CGPA Calculator">
+<meta property="og:locale" content="en_US">
+
+<!-- ── Twitter / X Card ── -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://ewucgpa.netlify.app/">
+<meta name="twitter:title" content="EWU CGPA Calculator – East West University">
+<meta name="twitter:description" content="Calculate your semester GPA and cumulative CGPA instantly. Built for EWU students — free, fast, and easy to use.">
+<meta name="twitter:image" content="https://ewucgpa.netlify.app/og-image.png">
+
+<!-- ── Structured Data (JSON-LD) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "EWU CGPA Calculator",
+  "description": "Free online CGPA and GPA calculator for East West University (EWU) students in Bangladesh. Enter your course credits and grades to instantly compute your semester GPA and cumulative CGPA.",
+  "url": "https://ewucgpa.netlify.app/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student"
+  },
+  "about": {
+    "@type": "Organization",
+    "name": "East West University",
+    "alternateName": "EWU",
+    "addressCountry": "BD"
+  }
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0900;
+    --surface: #1a1100;
+    --card: #241700;
+    --border: #3d2800;
+    --accent: #fbbf24;
+    --accent2: #f87171;
+    --accent3: #fde68a;
+    --text: #fef9ec;
+    --muted: #8a6830;
+    --danger: #f87171;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Animated grid background ── */
+  #bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(100deg, rgba(100,116,139,0.12) 0%, rgba(100,116,139,0.12) 1px, transparent 1px, transparent 4%);
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent 30%, black 100%);
+    mask-image: radial-gradient(ellipse at center, transparent 30%, black 100%);
+    animation: gridMove 40s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+  }
+
+  /* ── Animated circles ── */
+  .circles-wrap {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    height: 520px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .circle {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid;
+    animation: circleRotate 5s ease-in-out infinite, circlePulse 5s ease-in-out infinite;
+  }
+
+  .circle-0 {
+    border-color: rgba(251,191,36,0.6);
+    background: radial-gradient(ellipse at center, rgba(251,191,36,0.18) 0%, transparent 70%);
+    animation-delay: 0s;
+  }
+  .circle-1 {
+    border-color: rgba(248,113,113,0.45);
+    background: radial-gradient(ellipse at center, rgba(248,113,113,0.08) 0%, transparent 70%);
+    animation-delay: -0.4s;
+  }
+  .circle-2 {
+    border-color: rgba(71,85,105,0.28);
+    background: transparent;
+    animation-delay: -0.8s;
+  }
+
+  @keyframes circleRotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes circlePulse {
+    0%, 100% { opacity: 0.8; transform: rotate(var(--r,0deg)) scale(1); }
+    50%       { opacity: 1;   transform: rotate(var(--r,180deg)) scale(1.06); }
+  }
+
+  /* Deep glow layer */
+  .bg-glow {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(180,83,9,0.2) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 50% 50%, rgba(251,191,36,0.1) 0%, transparent 60%);
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 52px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(251,191,36,0.12);
+    border: 1px solid rgba(251,191,36,0.28);
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fef9ec 0%, #fbbf24 45%, #f87171 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 32px rgba(251,191,36,0.3));
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(251,191,36,0.5), transparent);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title span {
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+
+  /* Form row */
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 500px) { .row-2 { grid-template-columns: 1fr; } }
+
+  .field { display: flex; flex-direction: column; gap: 8px; }
+
+  label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  input[type="number"], input[type="text"] {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(251,191,36,0.12);
+  }
+  input::placeholder { color: #3d2800; }
+
+  /* Courses section */
+  #courses-container { display: flex; flex-direction: column; gap: 12px; }
+
+  .course-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+    animation: fadeUp 0.3s ease both;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .course-row .course-num {
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .course-row .field { padding-top: 16px; }
+
+  .btn-remove {
+    background: rgba(247,111,111,0.1);
+    border: 1px solid rgba(247,111,111,0.25);
+    color: var(--danger);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    align-self: flex-end;
+  }
+  .btn-remove:hover { background: rgba(247,111,111,0.2); }
+
+  /* Buttons */
+  .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-add {
+    background: rgba(251,191,36,0.12);
+    border: 1px solid rgba(251,191,36,0.28);
+    color: var(--accent);
+  }
+  .btn-add:hover { background: rgba(251,191,36,0.22); transform: translateY(-1px); }
+
+  .btn-calc {
+    background: linear-gradient(135deg, #b45309, #b91c1c);
+    color: #fef9ec;
+    font-weight: 500;
+    flex: 1;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(251,191,36,0.25);
+  }
+  .btn-calc:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(251,191,36,0.38); }
+  .btn-calc:active { transform: translateY(0); }
+
+  .btn-reset {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .btn-reset:hover { border-color: var(--accent); color: var(--text); }
+
+  /* Result */
+  #result {
+    display: none;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 500px) { .result-grid { grid-template-columns: 1fr; } }
+
+  .result-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-box.highlight {
+    background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(248,113,113,0.06));
+    border-color: rgba(251,191,36,0.38);
+  }
+
+  .result-box.highlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(251,191,36,0.12), transparent 60%);
+  }
+
+  .result-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .result-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .gpa-val { color: var(--accent3); }
+  .cgpa-val {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .result-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Grade indicator bar */
+  .grade-bar-wrap { margin-top: 20px; }
+  .grade-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .grade-bar { height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .grade-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #fbbf24, #f87171, #fde68a);
+    width: 0;
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Error */
+  .error-msg {
+    background: rgba(248,113,113,0.1);
+    border: 1px solid rgba(248,113,113,0.25);
+    color: var(--danger);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.93); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── Theme switcher ── */
+  .theme-switcher {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 10px;
+    backdrop-filter: blur(12px);
+  }
+
+  .theme-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .theme-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .theme-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+  }
+
+  .theme-dot:hover { transform: scale(1.2); }
+  .theme-dot.active { border-color: #fff; transform: scale(1.15); }
+
+  .dot-emerald { background: linear-gradient(135deg, #10d9a0, #22d3ee); }
+  .dot-violet  { background: linear-gradient(135deg, #8b5cf6, #d946ef); }
+  .dot-amber   { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+  .dot-sky     { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+  .dot-rose    { background: linear-gradient(135deg, #f43f5e, #fb923c); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #3d2800;
+    margin-top: 40px;
+    letter-spacing: 0.05em;
+  }
+  /* ── Custom cursor ── */
+  * { cursor: none !important; }
+
+  #cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s, height 0.15s, background 0.2s;
+    box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+  }
+
+  #cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+    transition: width 0.2s, height 0.2s, border-color 0.2s, opacity 0.2s;
+  }
+
+  body:has(button:hover) #cursor-dot,
+  body:has(input:hover) #cursor-dot  { width: 16px; height: 16px; }
+  body:has(button:hover) #cursor-ring,
+  body:has(input:hover) #cursor-ring { width: 52px; height: 52px; opacity: 0.3; }
+
+  .cursor-particle {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9997;
+    transform: translate(-50%, -50%);
+    animation: particleFade 0.7s ease forwards;
+  }
+
+  @keyframes particleFade {
+    0%   { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0;   transform: translate(-50%, -50%) scale(0); }
+  }
+</style>
+</head>
+<body>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<div id="bg-grid">
+  <div class="grid-lines"></div>
+</div>
+
+<div class="circles-wrap">
+  <div class="circle circle-0"></div>
+  <div class="circle circle-1"></div>
+  <div class="circle circle-2"></div>
+</div>
+
+<div class="bg-glow"></div>
+
+<!-- Theme Switcher -->
+<div class="theme-switcher">
+  <span class="theme-label">Theme</span>
+  <div class="theme-dots">
+    <div class="theme-dot dot-emerald" onclick="setTheme('emerald')" title="Emerald"></div>
+    <div class="theme-dot dot-violet"  onclick="setTheme('violet')"  title="Violet"></div>
+    <div class="theme-dot dot-amber active"   onclick="setTheme('amber')"   title="Amber"></div>
+    <div class="theme-dot dot-sky"     onclick="setTheme('sky')"     title="Sky"></div>
+    <div class="theme-dot dot-rose"    onclick="setTheme('rose')"    title="Rose"></div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <header>
+    <div class="badge">Academic Tools</div>
+    <h1>EWU CGPA Calculator</h1>
+    <p class="subtitle">track your academic performance</p>
+  </header>
+
+  <!-- Previous Record -->
+  <div class="card" style="animation-delay:0.05s">
+    <div class="card-title"><span></span> Previous Academic Record</div>
+    <div class="row-2">
+      <div class="field">
+        <label>Completed Credits</label>
+        <input type="number" id="prev-credits" placeholder="e.g. 90" min="0" step="any">
+      </div>
+      <div class="field">
+        <label>Current CGPA</label>
+        <input type="number" id="prev-cgpa" placeholder="e.g. 3.45" min="0" max="4" step="any">
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Semester -->
+  <div class="card" style="animation-delay:0.1s">
+    <div class="card-title"><span></span> This Semester's Courses</div>
+    <div id="courses-container"></div>
+    <div class="btn-group">
+      <button class="btn btn-add" onclick="addCourse()">＋ Add Course</button>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="card" style="animation-delay:0.15s; border-color: rgba(251,191,36,0.22);">
+    <div class="btn-group" style="margin:0">
+      <button class="btn btn-calc" onclick="calculate()">⟶ Calculate CGPA</button>
+      <button class="btn btn-reset" onclick="resetAll()">↺ Reset</button>
+    </div>
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <!-- Result -->
+  <div class="card" id="result" style="animation-delay:0s; border-color: rgba(251,191,36,0.35);">
+    <div class="card-title"><span></span> Results</div>
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="result-label">Semester GPA</div>
+        <div class="result-value gpa-val" id="res-gpa">0.00</div>
+        <div class="result-sub" id="res-sem-credits">— credits</div>
+      </div>
+      <div class="result-box highlight">
+        <div class="result-label">Updated CGPA</div>
+        <div class="result-value cgpa-val" id="res-cgpa">0.00</div>
+        <div class="result-sub" id="res-total-credits">— total credits</div>
+      </div>
+    </div>
+    <div class="grade-bar-wrap">
+      <div class="grade-bar-label">
+        <span>0.00</span>
+        <span id="bar-current">0.00 / 4.00</span>
+        <span>4.00</span>
+      </div>
+      <div class="grade-bar"><div class="grade-bar-fill" id="grade-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <p class="footer-note">Supports any grading scale · Results update instantly</p>
+
+</div>
+
+<script>
+let courseCount = 0;
+
+function addCourse() {
+  courseCount++;
+  const n = courseCount;
+  const container = document.getElementById('courses-container');
+  const row = document.createElement('div');
+  row.className = 'course-row';
+  row.id = `course-${n}`;
+  row.innerHTML = `
+    <span class="course-num">COURSE ${n}</span>
+    <div class="field">
+      <label>Credit</label>
+      <input type="number" id="credit-${n}" placeholder="3" min="0.5" step="0.5">
+    </div>
+    <div class="field">
+      <label>Grade Points</label>
+      <input type="number" id="grade-${n}" placeholder="3.5" min="0" max="4" step="0.25">
+    </div>
+    <button class="btn-remove" onclick="removeCourse(${n})" title="Remove">×</button>
+  `;
+  container.appendChild(row);
+}
+
+function removeCourse(id) {
+  const el = document.getElementById(`course-${id}`);
+  if (el) { el.style.opacity = '0'; el.style.transform = 'scale(0.95)'; el.style.transition = 'all 0.2s'; setTimeout(() => el.remove(), 200); }
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+function calculate() {
+  document.getElementById('error-msg').style.display = 'none';
+
+  const prevCreditsEl = document.getElementById('prev-credits');
+  const prevCgpaEl = document.getElementById('prev-cgpa');
+  const prevCredits = parseFloat(prevCreditsEl.value) || 0;
+  const prevCgpa = parseFloat(prevCgpaEl.value) || 0;
+
+  // Gather courses
+  const rows = document.querySelectorAll('.course-row');
+  if (rows.length === 0) { showError('Please add at least one course.'); return; }
+
+  let gpaSum = 0, creditSum = 0;
+  let valid = true;
+
+  rows.forEach(row => {
+    const id = row.id.split('-')[1];
+    const credit = parseFloat(document.getElementById(`credit-${id}`)?.value);
+    const grade  = parseFloat(document.getElementById(`grade-${id}`)?.value);
+    if (isNaN(credit) || credit <= 0) { showError(`Enter a valid credit for Course ${id}.`); valid = false; return; }
+    if (isNaN(grade) || grade < 0)    { showError(`Enter a valid grade for Course ${id}.`); valid = false; return; }
+    gpaSum   += credit * grade;
+    creditSum += credit;
+  });
+
+  if (!valid) return;
+  if (creditSum === 0) { showError('Total credits cannot be zero.'); return; }
+
+  const semGpa = gpaSum / creditSum;
+  const totalCredits = prevCredits + creditSum;
+  const cgpa = (prevCredits + creditSum > 0)
+    ? ((prevCgpa * prevCredits) + (semGpa * creditSum)) / totalCredits
+    : semGpa;
+
+  // Show result
+  const resultEl = document.getElementById('result');
+  resultEl.style.display = 'block';
+  resultEl.style.animation = 'none';
+  void resultEl.offsetWidth;
+  resultEl.style.animation = 'popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both';
+
+  document.getElementById('res-gpa').textContent   = semGpa.toFixed(2);
+  document.getElementById('res-cgpa').textContent  = cgpa.toFixed(2);
+  document.getElementById('res-sem-credits').textContent   = `${creditSum} credit${creditSum !== 1 ? 's' : ''} this semester`;
+  document.getElementById('res-total-credits').textContent = `${totalCredits} total credit${totalCredits !== 1 ? 's' : ''}`;
+  document.getElementById('bar-current').textContent = `${cgpa.toFixed(2)} / 4.00`;
+
+  // Animate bar — detect max scale
+  const maxScale = 4; // 4.0 scale default
+  const pct = Math.min((cgpa / maxScale) * 100, 100);
+  setTimeout(() => { document.getElementById('grade-bar-fill').style.width = pct + '%'; }, 100);
+
+  resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetAll() {
+  document.getElementById('prev-credits').value = '';
+  document.getElementById('prev-cgpa').value = '';
+  document.getElementById('courses-container').innerHTML = '';
+  courseCount = 0;
+  const result = document.getElementById('result');
+  result.style.display = 'none';
+  document.getElementById('grade-bar-fill').style.width = '0';
+  document.getElementById('error-msg').style.display = 'none';
+}
+
+// ── Theme switcher ──
+const THEMES = {
+  emerald: {
+    bg:'#020c0a', surface:'#061410', card:'#0a1f1a', border:'#1a3530',
+    accent:'#10d9a0', accent2:'#22d3ee', accent3:'#6ee7b7',
+    text:'#e0faf4', muted:'#4d8a78',
+    c0:'rgba(16,217,160,0.6)', c1:'rgba(34,211,238,0.45)',
+    cBg0:'rgba(16,217,160,0.18)', cBg1:'rgba(34,211,238,0.08)',
+    glow1:'rgba(13,148,136,0.18)', glow2:'rgba(16,217,160,0.1)',
+    h1:'linear-gradient(135deg,#e0faf4 0%,#10d9a0 45%,#22d3ee 100%)',
+    barFill:'linear-gradient(90deg,#10d9a0,#22d3ee,#6ee7b7)',
+    btnCalc:'linear-gradient(135deg,#0d9e76,#0e86a8)',
+    inputPh:'#1a3530', footerNote:'#1a3530',
+    shadow:'rgba(16,217,160,0.25)', shadowHover:'rgba(16,217,160,0.38)',
+    dropShadow:'rgba(16,217,160,0.3)',
+  },
+  violet: {
+    bg:'#08060f', surface:'#100c1c', card:'#160f28', border:'#2d1f50',
+    accent:'#a78bfa', accent2:'#d946ef', accent3:'#c4b5fd',
+    text:'#f0eaff', muted:'#7055a8',
+    c0:'rgba(167,139,250,0.6)', c1:'rgba(217,70,239,0.45)',
+    cBg0:'rgba(167,139,250,0.18)', cBg1:'rgba(217,70,239,0.08)',
+    glow1:'rgba(109,40,217,0.2)', glow2:'rgba(167,139,250,0.1)',
+    h1:'linear-gradient(135deg,#f0eaff 0%,#a78bfa 45%,#d946ef 100%)',
+    barFill:'linear-gradient(90deg,#a78bfa,#d946ef,#c4b5fd)',
+    btnCalc:'linear-gradient(135deg,#7c3aed,#a21caf)',
+    inputPh:'#2d1f50', footerNote:'#2d1f50',
+    shadow:'rgba(167,139,250,0.25)', shadowHover:'rgba(167,139,250,0.38)',
+    dropShadow:'rgba(167,139,250,0.3)',
+  },
+  amber: {
+    bg:'#0e0900', surface:'#1a1100', card:'#241700', border:'#3d2800',
+    accent:'#fbbf24', accent2:'#f87171', accent3:'#fde68a',
+    text:'#fef9ec', muted:'#8a6830',
+    c0:'rgba(251,191,36,0.6)', c1:'rgba(248,113,113,0.45)',
+    cBg0:'rgba(251,191,36,0.18)', cBg1:'rgba(248,113,113,0.08)',
+    glow1:'rgba(180,83,9,0.2)', glow2:'rgba(251,191,36,0.1)',
+    h1:'linear-gradient(135deg,#fef9ec 0%,#fbbf24 45%,#f87171 100%)',
+    barFill:'linear-gradient(90deg,#fbbf24,#f87171,#fde68a)',
+    btnCalc:'linear-gradient(135deg,#b45309,#b91c1c)',
+    inputPh:'#3d2800', footerNote:'#3d2800',
+    shadow:'rgba(251,191,36,0.25)', shadowHover:'rgba(251,191,36,0.38)',
+    dropShadow:'rgba(251,191,36,0.3)',
+  },
+  sky: {
+    bg:'#020a10', surface:'#061422', card:'#0a1f30', border:'#1a3550',
+    accent:'#38bdf8', accent2:'#818cf8', accent3:'#7dd3fc',
+    text:'#e0f4ff', muted:'#3d6e8a',
+    c0:'rgba(56,189,248,0.6)', c1:'rgba(129,140,248,0.45)',
+    cBg0:'rgba(56,189,248,0.18)', cBg1:'rgba(129,140,248,0.08)',
+    glow1:'rgba(3,105,161,0.2)', glow2:'rgba(56,189,248,0.1)',
+    h1:'linear-gradient(135deg,#e0f4ff 0%,#38bdf8 45%,#818cf8 100%)',
+    barFill:'linear-gradient(90deg,#38bdf8,#818cf8,#7dd3fc)',
+    btnCalc:'linear-gradient(135deg,#0369a1,#4338ca)',
+    inputPh:'#1a3550', footerNote:'#1a3550',
+    shadow:'rgba(56,189,248,0.25)', shadowHover:'rgba(56,189,248,0.38)',
+    dropShadow:'rgba(56,189,248,0.3)',
+  },
+  rose: {
+    bg:'#0f0208', surface:'#1c0410', card:'#280618', border:'#4a0a28',
+    accent:'#fb7185', accent2:'#fb923c', accent3:'#fda4af',
+    text:'#fff0f3', muted:'#8a3a50',
+    c0:'rgba(251,113,133,0.6)', c1:'rgba(251,146,60,0.45)',
+    cBg0:'rgba(251,113,133,0.18)', cBg1:'rgba(251,146,60,0.08)',
+    glow1:'rgba(159,18,57,0.2)', glow2:'rgba(251,113,133,0.1)',
+    h1:'linear-gradient(135deg,#fff0f3 0%,#fb7185 45%,#fb923c 100%)',
+    barFill:'linear-gradient(90deg,#fb7185,#fb923c,#fda4af)',
+    btnCalc:'linear-gradient(135deg,#be123c,#c2410c)',
+    inputPh:'#4a0a28', footerNote:'#4a0a28',
+    shadow:'rgba(251,113,133,0.25)', shadowHover:'rgba(251,113,133,0.38)',
+    dropShadow:'rgba(251,113,133,0.3)',
+  },
+};
+
+function setTheme(name) {
+  const t = THEMES[name];
+  const r = document.documentElement.style;
+  r.setProperty('--bg',      t.bg);
+  r.setProperty('--surface', t.surface);
+  r.setProperty('--card',    t.card);
+  r.setProperty('--border',  t.border);
+  r.setProperty('--accent',  t.accent);
+  r.setProperty('--accent2', t.accent2);
+  r.setProperty('--accent3', t.accent3);
+  r.setProperty('--text',    t.text);
+  r.setProperty('--muted',   t.muted);
+
+  // Circles
+  document.querySelector('.circle-0').style.borderColor = t.c0;
+  document.querySelector('.circle-0').style.background  = `radial-gradient(ellipse at center,${t.cBg0} 0%,transparent 70%)`;
+  document.querySelector('.circle-1').style.borderColor = t.c1;
+  document.querySelector('.circle-1').style.background  = `radial-gradient(ellipse at center,${t.cBg1} 0%,transparent 70%)`;
+
+  // Glow
+  document.querySelector('.bg-glow').style.background =
+    `radial-gradient(ellipse 60% 50% at 50% 50%,${t.glow1} 0%,transparent 70%),
+     radial-gradient(ellipse 40% 30% at 50% 50%,${t.glow2} 0%,transparent 60%)`;
+
+  // H1 gradient
+  const h1 = document.querySelector('h1');
+  h1.style.backgroundImage = t.h1;
+  h1.style.filter = `drop-shadow(0 0 32px ${t.dropShadow})`;
+
+  // Bar fill
+  document.getElementById('grade-bar-fill').style.background = t.barFill;
+
+  // Calc button
+  document.querySelector('.btn-calc').style.background = t.btnCalc;
+  document.querySelector('.btn-calc').style.boxShadow = `0 4px 20px ${t.shadow}`;
+
+  // Placeholder color via style injection
+  let styleTag = document.getElementById('dynamic-styles');
+  if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'dynamic-styles'; document.head.appendChild(styleTag); }
+  styleTag.textContent = `
+    input::placeholder { color: ${t.inputPh} !important; }
+    input:focus { border-color: ${t.accent} !important; box-shadow: 0 0 0 3px ${t.accent}22 !important; }
+    .footer-note { color: ${t.footerNote} !important; }
+    .card::before { background: linear-gradient(90deg,transparent,${t.accent}80,transparent) !important; }
+    .btn-calc:hover { box-shadow: 0 8px 28px ${t.shadowHover} !important; }
+  `;
+
+  // Active dot
+  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+  document.querySelector(`.dot-${name}`).classList.add('active');
+}
+
+// ── Custom cursor ──
+const dot  = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+let lastParticle = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px';
+  dot.style.top  = my + 'px';
+
+  // Spawn trailing particle
+  const now = Date.now();
+  if (now - lastParticle > 40) {
+    lastParticle = now;
+    spawnParticle(mx, my);
+  }
+});
+
+// Ring follows with lerp
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+function spawnParticle(x, y) {
+  const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  const p = document.createElement('div');
+  p.className = 'cursor-particle';
+  const size = Math.random() * 5 + 3;
+  const ox = (Math.random() - 0.5) * 12;
+  const oy = (Math.random() - 0.5) * 12;
+  p.style.cssText = `
+    left:${x + ox}px; top:${y + oy}px;
+    width:${size}px; height:${size}px;
+    background:${accentColor};
+    box-shadow: 0 0 ${size * 2}px ${accentColor};
+  `;
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 700);
+}
+
+// Update ring color on theme change (piggyback setTheme)
+const _origSetTheme = setTheme;
+// already defined above — ring border auto follows --accent via CSS var
+
+// Start with 3 courses
+addCourse(); addCourse(); addCourse();
+</script>
+</body>
+</html>
